@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.contrib.auth import authenticate #! import  for  auth 
 from rest_framework_simplejwt.tokens import RefreshToken
-from .Serializer import UserSerializer, NameSerializer
+from .Serializer import UserSerializer, NameSerializer, BioSerializer
 from .models import User
 
 #! see  the  view set used  for  crud operation like  get ,post ,update ,delete single  item
@@ -137,18 +137,24 @@ class Logout(APIView):
 class UpdateName(APIView):
     
  def patch(self, request, pk):
+     
+    user=request.user
 
     try:
         obj = User.objects.get(pk=pk)  
    
             
     except User.DoesNotExist:
-        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({
+            "error": "User not found",
+            "error sourse": "error  come for add name and  dof"
+            
+            }, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = NameSerializer(obj, data=request.data, partial=True)  
+    serializer = NameSerializer(user,obj, data=request.data, partial=True)  
 
 
-    if serializer.is_valid():
+    if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response({
             "data": serializer.data,
@@ -163,6 +169,50 @@ class UpdateName(APIView):
         })
 
 
+
+#!  class  for  update  bio and  profile  image 
+
+class updateBioPfroile(APIView):
+    
+    
+ def patch(self, request, pk):
+     
+    # user=request.user
+     try:
+         obj=User.objects.get(pk=pk)
+         
+     except User.DoesNotExist:
+         return Response({
+             "error":"User not found",
+              "error sourse": "error  come for add bio and  profile  "
+                          },status=status.HTTP_404_NOT_FOUND)
+         
+     ser=BioSerializer(obj,data=request.data)
+     
+     if ser.is_valid():
+         ser.save()
+         return Response({
+             "data":ser.data,
+             "stus":status.HTTP_200_OK,
+			 "message":"User updated successfully"
+			 
+    
+		 })
+         
+     else:
+         return Response({
+			 "error":ser.errors,
+			 "status":status.HTTP_400_BAD_REQUEST,
+			 "message":"User not updated"
+    
+		 })   
+         
+	
+         
+	
+       
+    
+    
 
 
 

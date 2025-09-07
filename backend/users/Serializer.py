@@ -7,19 +7,12 @@ from post.Serializer  import postSerializer
 
 
 
-#! post  serilizer  
-
-
-
-
-
-
-
 
 class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField()
-    user_post=postSerializer(many=True,read_only=True)
+    posts=postSerializer(many=True,read_only=True) #! fro  how  all user  post  
+    
     # full_name = serializers.EmailField()
    # phone = serializers.EmailField()
 
@@ -35,10 +28,10 @@ class UserSerializer(serializers.ModelSerializer):
             "profile_image",
             "branch",
             "created_at",
-            "user_post",
             "dateofbirth",
             "password",
-            "user_post"
+            "posts",
+           
         ]
         # ! password will be required but not shown in API response
         extra_kwargs = {
@@ -132,23 +125,33 @@ class NameSerializer(serializers.ModelSerializer):
         return instance
 
     # ! VALIDATE FULL NAME
-    # def validate_full_name(self,value):
-    #     if value is None:
-    #         raise serializers.ValidationError("Full name is required.")
-    #     elif len(value)<4:
-    #         raise serializers.ValidationError("Full name must be at least 4 characters.")
-    #     return value
+    def validate_full_name(self, value):
+        if value is None:
+            raise serializers.ValidationError("Full name is required.")
+        elif len(value)<4:
+            raise serializers.ValidationError("Full name must be at least 4 characters.")
+        return value
+    
+    
+ #!   class  of  bioo and profile image
+  
+class BioSerializer(serializers.ModelSerializer):
 
-    # def validate_dateofbirth(self, value):
-    #     if value is None:
-    #         raise serializers.ValidationError("Date of birth is required.")
-
-    #     today= datetime.date.today()
-    #     age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
-
-    #     if age < 18:
-    #         raise serializers.ValidationError("You must be at least 18 years old.")
-    #     return value
+    class Meta:
+        model=User
+        fields=["bio","profile_image"]      
+        
+        
+        
+    def update(self, instance, validated_data):
+        instance.bio = validated_data.get('bio', instance.bio)
+       # instance.profile_image = validated_data.get('profile_image', instance.profile_image)
+        instance.save()
+        return instance
+        
+    
+    
+    
 		
   
    

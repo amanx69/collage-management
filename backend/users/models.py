@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.core.exceptions import ValidationError
 import re
+import  post.models as post
 
 # Custom Manager
 class UserManager(BaseUserManager):
@@ -23,7 +24,6 @@ class UserManager(BaseUserManager):
 
  ##!Custom User Model
 class User(AbstractBaseUser, PermissionsMixin):
-  #  user_post= models.ForeignKey(Post, on_delete=models.CASCADE, related_name="user_post")
     email = models.EmailField(unique=True)   # used for login
     full_name = models.CharField(max_length=100,blank=True,)
     phone = models.CharField(max_length=15, blank=True, null=True)
@@ -45,18 +45,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-
-
-    # def  clean(self):
-        
-    #     if not self.email.endswith("@gmail.com"):
-    #         raise ValidationError({"email": "Only Gmail accounts allowed."})
-
-    #     #! Phone number must be 10 digits
-    #     if self.phone and not re.match(r"^[0-9]{10}$", self.phone):
-    #         raise ValidationError({"phone": "Phone must be 10 digits"})
-
-    #     #! Full name must be at least 3 characters
-    #     if len(self.full_name.strip()) < 3:
-    #         raise ValidationError({"full_name": "Full name must be at least 3 characters"}) 

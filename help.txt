@@ -14,3 +14,13 @@ test email pass
 
 email+> ashukumarsahu@gmail.com
 pass => amankuma4@rAau
+
+
+fro  check stutes =>  git status
+
+add changes => git add .
+
+uplode  chnage => git commit -m "Added new feature / Fixed bug"
+
+push to git hub => git push origin main
+
