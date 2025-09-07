@@ -1,0 +1,16 @@
+ python manage.py migrate
+
+python manage.py makemigrations
+
+//!  FOR RUN FOR  PHONE 
+python manage.py runserver 0.0.0.0:8000
+
+
+
+
+
+test email pass
+
+
+email+> ashukumarsahu@gmail.com
+pass => amankuma4@rAau
