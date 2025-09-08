@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'events',
     "corsheaders",
+    'home',
     
 ]
 AUTH_USER_MODEL = "users.User"

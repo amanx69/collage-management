@@ -1,9 +1,10 @@
 from django.db import models
-
+from users.models import User
 # Create your models here.
 
 class Announcement(models.Model):
-    type=models.CharField(max_length=100)
+    user = models.ForeignKey(User,null=True,blank=True, on_delete=models.CASCADE, related_name="announcement")#!  stroe user id
+    types=models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField()
     createdon = models.DateTimeField(auto_now_add=True)

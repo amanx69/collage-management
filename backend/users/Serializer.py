@@ -3,6 +3,7 @@ from .models import User
 import  re 
 import datetime
 from post.Serializer  import postSerializer
+from faculty.Serializer import AnnouncementSerializer
 
 
 
@@ -12,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField()
     posts=postSerializer(many=True,read_only=True) #! fro  how  all user  post  
+    announcement=AnnouncementSerializer(many=True,read_only=True)
     
     # full_name = serializers.EmailField()
    # phone = serializers.EmailField()
@@ -31,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
             "dateofbirth",
             "password",
             "posts",
+            "announcement",
            
         ]
         # ! password will be required but not shown in API response
@@ -111,16 +114,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     
 class NameSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField()
+    dateofbirth = serializers.DateField()
+    branch = serializers.CharField()
 
 
     class Meta:
         model = User
-        fields = ['full_name', 'dateofbirth']
+        fields = ['full_name', 'dateofbirth','branch']
 
 #! update name and date of birth
     def update(self, instance, validated_data):
         instance.full_name = validated_data.get('full_name', instance.full_name)
         instance.dateofbirth = validated_data.get('dateofbirth', instance.dateofbirth)
+        instance.branch = validated_data.get('branch', instance.branch)
         instance.save()
         return instance
 
@@ -133,21 +140,35 @@ class NameSerializer(serializers.ModelSerializer):
         return value
     
     
+    # ! VALIDATE DATE OF BIRTH
+    def validate_dateofbirth(self, value):
+        if value is None:
+            raise serializers.ValidationError("Date of birth is required.")
+        elif value > datetime.date.today():
+            raise serializers.ValidationError("Date of birth cannot be in the future.")
+        return value
+    def validate_branch(self, value):
+        if value is None:
+            raise serializers.ValidationError("Branch is required.")
+        return value
+    
  #!   class  of  bioo and profile image
   
 class BioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=User
-        fields=["bio","profile_image"]      
+        fields=['bio','profile_image']      
         
         
         
     def update(self, instance, validated_data):
         instance.bio = validated_data.get('bio', instance.bio)
-       # instance.profile_image = validated_data.get('profile_image', instance.profile_image)
+        instance.profile_image = validated_data.get('profile_image', instance.profile_image)
         instance.save()
         return instance
+    
+     
         
     
     

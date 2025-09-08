@@ -135,13 +135,14 @@ class Logout(APIView):
 #! class  fro update  usenname and  date of  birth 
 
 class UpdateName(APIView):
+ permission_classes = [IsAuthenticated]
     
  def patch(self, request, pk):
      
     user=request.user
 
     try:
-        obj = User.objects.get(pk=pk)  
+        User.objects.get(pk=pk)  #  for get  user if  not  give  error
    
             
     except User.DoesNotExist:
@@ -151,7 +152,7 @@ class UpdateName(APIView):
             
             }, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = NameSerializer(user,obj, data=request.data, partial=True)  
+    serializer = NameSerializer(instance=user, data=request.data, partial=True)  
 
 
     if serializer.is_valid(raise_exception=True):
@@ -166,20 +167,21 @@ class UpdateName(APIView):
             "error": serializer.errors,
             "status": status.HTTP_400_BAD_REQUEST,
             "message": "User not updated"
-        })
+        })	
 
 
 
 #!  class  for  update  bio and  profile  image 
 
 class updateBioPfroile(APIView):
+ permission_classes = [IsAuthenticated]
     
     
  def patch(self, request, pk):
      
-    # user=request.user
+     user=request.user
      try:
-         obj=User.objects.get(pk=pk)
+         User.objects.get(pk=pk)
          
      except User.DoesNotExist:
          return Response({
@@ -187,7 +189,7 @@ class updateBioPfroile(APIView):
               "error sourse": "error  come for add bio and  profile  "
                           },status=status.HTTP_404_NOT_FOUND)
          
-     ser=BioSerializer(obj,data=request.data)
+     ser=BioSerializer(instance=user,data=request.data)
      
      if ser.is_valid():
          ser.save()
@@ -207,15 +209,6 @@ class updateBioPfroile(APIView):
     
 		 })   
          
-	
-         
-	
-       
-    
-    
-
-
-
 
 
 class data(APIView):
@@ -227,9 +220,7 @@ class data(APIView):
         return Response(serializer.data)
   
   
-  
-  
-  
+
   
 class alldata(APIView):
     permission_classes=[AllowAny]
