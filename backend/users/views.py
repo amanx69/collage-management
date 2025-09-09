@@ -68,17 +68,17 @@ class login(APIView):
        
         #! if  user  not enter email or password  return  error
 
-		if not email or not password:
-			return Response({
-                 "error": "Email and password are required.",
-                 "status": status.HTTP_400_BAD_REQUEST
+		# if not email or not password:
+		# 	return Response({
+        #          "error": "Email and password are required.",
+        #          "status": status.HTTP_400_BAD_REQUEST
                  
        
-                    }, status=status.HTTP_400_BAD_REQUEST)
+        #             }, status=status.HTTP_400_BAD_REQUEST)
    
         #! if  user  put  invalid  email or password  return  
         
-		elif not email.endswith("@gmail.com"):
+		if not email.endswith("@gmail.com"):
       
 			return Response({
 				"error": "Invalid email format.",

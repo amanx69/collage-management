@@ -3,7 +3,7 @@ from .models import User
 import  re 
 import datetime
 from post.Serializer  import postSerializer
-from faculty.Serializer import AnnouncementSerializer
+from events.Serializer import AnnouncementSerializer
 
 
 

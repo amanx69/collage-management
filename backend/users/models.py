@@ -32,6 +32,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     branch=models.CharField(max_length=100,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     dateofbirth = models.DateField(null=True, blank=True)
+    ROLE_CHOICES = (
+        ('student', 'Student'),
+        ('faculty', 'Faculty'),
+    )
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, blank=True, null=True)
+
+    
 
     # Required fields
     is_active = models.BooleanField(default=True)
