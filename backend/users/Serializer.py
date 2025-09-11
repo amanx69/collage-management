@@ -46,6 +46,7 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password")
         user = User.objects.create_user(password=password, **validated_data)
         user.profile_image = validated_data.get("profile_image")
+        user.role=validated_data.get("role")
         user.save()
         return user
     
@@ -63,12 +64,6 @@ class UserSerializer(serializers.ModelSerializer):
     
     
 
-  
-		
-	
-
-
-	
 		
     # ! VALIDATE PHONE
     def validate_phone(self, value):

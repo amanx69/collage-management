@@ -181,7 +181,7 @@ class updateBioPfroile(APIView):
      
      user=request.user
      try:
-         User.objects.get(pk=pk)
+             User.objects.get(pk=pk)
          
      except User.DoesNotExist:
          return Response({

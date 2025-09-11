@@ -5,6 +5,7 @@ from events.Serializer import AnnouncementSerializer
 from rest_framework import status  
 from rest_framework import permissions
 from  events.models import Announcement
+from .permissions import isFaculty
 
 
 
@@ -13,7 +14,7 @@ from  events.models import Announcement
 #!  save  announcement 
 
 class uploadunnouncement(APIView):
-   permission_classes=[permissions.IsAuthenticated]
+   permission_classes=[isFaculty|permissions.IsAdminUser]
 
  #~  save  announcement in data base 
    def post(self, request):
@@ -44,7 +45,7 @@ class uploadunnouncement(APIView):
 #! upldate  announcement
 
 class  updateAnnouncement(APIView):
-   permission_classes=[permissions.IsAuthenticated]
+   permission_classes=[isFaculty|permissions.IsAdminUser]
    
    def  patch(self,request,pk):
        
@@ -83,17 +84,10 @@ class  updateAnnouncement(APIView):
                 
             
             
-   
-               
-           
-           
-           
-           
-   
 #! delerte  announcement
 
 class deleteAnnouncement(APIView):
-    #permission_classes=[permissions.IsAuthenticated]
+    permission_classes=[isFaculty|permissions.IsAdminUser]
     
     def delete(self,request,pk):
         try:
