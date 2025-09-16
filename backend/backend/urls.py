@@ -26,6 +26,7 @@ urlpatterns = [
     path("post/", include("post.urls")),
     path("fac/", include("faculty.urls")),
     path("ass/", include("assignment.urls")),
+    path("profile/", include("Profile.urls") ,name="profile",),
     
     path("admin/", admin.site.urls),
 ]

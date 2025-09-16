@@ -15,7 +15,7 @@ test email pass
 email+> ashukumarsahu@gmail.com
 pass => amankuma4@rAau
 
-
+                                                             
 fro  check stutes =>  git status
 
 add changes => git add .
@@ -24,3 +24,11 @@ uplode  chnage => git commit -m "Added new feature / Fixed bug"
 
 push to git hub => git push origin main
 
+
+
+"access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYW
+NjZXNzIiwiZXhwIjoxNzU3NDA1MzIwLCJpYXQiOjE3NT
+c0MDUwMjAsImp0aSI6IjI0OTViZGM3ZjgyNzQ4NmViNDlkYWNlZmM1MzhiMDI3IiwidXNlcl9pZCI6IjE0In0.OX8QiOr33pMR33v4_vcz6t79PzUAZq7N3hKnz3qIpw0",
+
+
+ "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ5MTQyMCwiaWF0IjoxNzU3NDA1MDIwLCJqdGkiOiIyNWE4NjAzZGQ0ZTU0ZTJkYmY2NDMxYmJhMjljNDRmMSIsInVzZXJfaWQiOiIxNCJ9.fU6yp0BuHCl39r8ujaNppEOChyOC245KGeHQGqFnuqg",

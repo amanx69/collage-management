@@ -1,9 +1,9 @@
 from django.urls import include, path
-from .views import uplodeAssignment
+from .views import uplodeAssignment,AssignmentList
 
 
 
 urlpatterns = [
-   path("upload/",uplodeAssignment.as_view()),
+   path("upload/",AssignmentList.as_view()),
     
 ]

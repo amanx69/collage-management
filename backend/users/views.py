@@ -1,14 +1,30 @@
 from rest_framework.response import Response
+from .Serializer import UserSerializer, NameSerializer, BioSerializer
 from rest_framework.views import APIView 
+from .models import User
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.contrib.auth import authenticate #! import  for  auth 
 from rest_framework_simplejwt.tokens import RefreshToken
-from .Serializer import UserSerializer, NameSerializer, BioSerializer
-from .models import User
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
 #! see  the  view set used  for  crud operation like  get ,post ,update ,delete single  item
+
+#? functrion for  gernate  token
+def get_token(user):
+    if not user.is_active:
+      raise AuthenticationFailed("User is not active")
+
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'access': str(refresh.access_token),
+        'refresh': str(refresh),
+    } 
+
+
+
 
 
  #! class  for sing  up 
@@ -16,15 +32,21 @@ class SingUp(APIView):
 	permission_classes = [AllowAny]
 
 	def post(self, request):
+		
+	
 		data = request.data
 		serializer = UserSerializer(data=data)
 		if serializer.is_valid():
-			serializer.save()
+			user =serializer.save()
+			token=get_token(user)
+            
 			return Response(
 				{
 					"massage":"User Created Successfully",
                     "data":serializer.data,
-                    "status=":status.HTTP_201_CREATED
+                    "status=":status.HTTP_201_CREATED,
+                    "token":token,
+                    "email":request.data.get("email"),
 				}
               
 			 )
@@ -68,22 +90,15 @@ class login(APIView):
        
         #! if  user  not enter email or password  return  error
 
-		# if not email or not password:
-		# 	return Response({
-        #          "error": "Email and password are required.",
-        #          "status": status.HTTP_400_BAD_REQUEST
+		if not email or not password:
+			return Response({
+                 "error": "Email and password are required.",
+                 "status": status.HTTP_400_BAD_REQUEST
                  
        
-        #             }, status=status.HTTP_400_BAD_REQUEST)
+                    }, status=status.HTTP_400_BAD_REQUEST)
    
-        #! if  user  put  invalid  email or password  return  
-        
-		if not email.endswith("@gmail.com"):
-      
-			return Response({
-				"error": "Invalid email format.",
-				"status": status.HTTP_400_BAD_REQUEST
-			}, status=status.HTTP_400_BAD_REQUEST)
+       
    #! if  email not found  data base 
 		elif not User.objects.filter(email=email).exists():
 			return Response({
@@ -189,7 +204,7 @@ class updateBioPfroile(APIView):
               "error sourse": "error  come for add bio and  profile  "
                           },status=status.HTTP_404_NOT_FOUND)
          
-     ser=BioSerializer(instance=user,data=request.data)
+     ser=BioSerializer(instance=user,data=request.data,partial=True)
      
      if ser.is_valid():
          ser.save()
@@ -215,8 +230,8 @@ class data(APIView):
     permission_classes=[AllowAny]
     
     def get(self, request,pk):
-        users =  User.objects.get(id=pk)
-        serializer = UserSerializer(users)
+        users =  User.objects.get(pk =pk)
+        serializer = UserSerializer(users,)
         return Response(serializer.data)
   
   
@@ -226,9 +241,19 @@ class alldata(APIView):
     permission_classes=[AllowAny]
     
     def get(self, request,):
-        users =  User.objects.all()
-        serializer = UserSerializer(users,many=True)
-        return Response(serializer.data)
+        
+        return Response({
+            "name":request.user.full_name,
+            "email":request.user.email,
+            "role":request.user.role,
+			"id":request.user.id,
+			
+			"bio":request.user.bio,
+			"dateofbirth":request.user.dateofbirth
+			
+			
+		})
+
   
   
   

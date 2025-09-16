@@ -18,14 +18,15 @@ class uploadunnouncement(APIView):
 
  #~  save  announcement in data base 
    def post(self, request):
-    if request.user.role=="faculty":
+        user= request.user #!  current user 
+
       #! if data is dic convert it to list
-          data= request.data
-          if not isinstance(data, list):
+        data= request.data
+        if not isinstance(data, list):
               data=[data]
-          ser= AnnouncementSerializer(data=data,many=True)
-          if ser.is_valid():
-              ser.save()
+              ser= AnnouncementSerializer(data=data,many=True)
+        if ser.is_valid():
+              ser.save(user=user)
               return Response(
                   {
                       "data":ser.data,
@@ -33,7 +34,7 @@ class uploadunnouncement(APIView):
                       "message":"announcement created successfully"
                   }
               )
-          else:
+        else:
               return Response(
                   {
                       "error":ser.errors,

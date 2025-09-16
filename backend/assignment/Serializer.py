@@ -1,12 +1,15 @@
 from rest_framework import  serializers
-from  .models import  assigment
+from  .models import  assigment 
+
 
 
 class AssignmentSerializer(serializers.ModelSerializer):
+
+ 
     class Meta:
         model = assigment
-        fields = ["id","users","title","file","section",
-                  "subject","created_at","sumbite_date"]
+        fields = ["id","users","title","file","section","last_date",
+                  "subject","created_at",]
         
         
         
@@ -27,6 +30,10 @@ class AssignmentSerializer(serializers.ModelSerializer):
     def validate_subject(self, value):
         if  value is None:
             return serializers.ValidationError("subject is required")
+        return value
+    def validate_last_date(self, value):
+        if  value is None:
+            return serializers.ValidationError("last date is required")
         return value
     
     

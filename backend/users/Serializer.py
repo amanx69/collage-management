@@ -11,7 +11,7 @@ from events.Serializer import AnnouncementSerializer
 
 class UserSerializer(serializers.ModelSerializer):
 
-    email = serializers.EmailField()
+  
     posts=postSerializer(many=True,read_only=True) #! fro  how  all user  post  
     announcement=AnnouncementSerializer(many=True,read_only=True)
     
@@ -29,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
             "bio",
             "profile_image",
             "branch",
+            'role',
             "created_at",
             "dateofbirth",
             "password",
@@ -66,20 +67,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 		
     # ! VALIDATE PHONE
-    def validate_phone(self, value):
-        if value and len(value) != 10:
-            raise serializers.ValidationError("Phone number must be exactly 10 digits.")
-        return value
-    
-    
-    #! full name  velidation 
-    def validate_full_name(self, value):
-        if value is None:
-            raise serializers.ValidationError("Full name is required.")
-        elif len(value)<4:
-            raise serializers.ValidationError("Full name must be at least 4 characters.")
-        return 
-    
+
+
     
     def validate_password(self, value):
         
@@ -111,12 +100,12 @@ class UserSerializer(serializers.ModelSerializer):
 class NameSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField()
     dateofbirth = serializers.DateField()
-    branch = serializers.CharField()
+ 
 
 
     class Meta:
         model = User
-        fields = ['full_name', 'dateofbirth','branch']
+        fields = ['full_name', 'dateofbirth',]
 
 #! update name and date of birth
     def update(self, instance, validated_data):
@@ -142,12 +131,12 @@ class NameSerializer(serializers.ModelSerializer):
         elif value > datetime.date.today():
             raise serializers.ValidationError("Date of birth cannot be in the future.")
         return value
-    def validate_branch(self, value):
-        if value is None:
-            raise serializers.ValidationError("Branch is required.")
-        return value
+#     def validate_branch(self, value):
+#         if value is None:
+#             raise serializers.ValidationError("Branch is required.")
+#         return value
     
- #!   class  of  bioo and profile image
+#  #!   class  of  bioo and profile image
   
 class BioSerializer(serializers.ModelSerializer):
 

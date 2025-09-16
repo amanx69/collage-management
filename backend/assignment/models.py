@@ -1,5 +1,7 @@
 from django.db import models
 from  users.models import User
+import datetime
+from django.utils import timezone
 
 
 
@@ -10,7 +12,24 @@ class assigment(models.Model):
     section= models.CharField(max_length=100)
     subject=models.CharField(max_length=100)
     created_at=models.DateTimeField(auto_now_add=True)
-    sumbite_date=models.DateField()
+
+    last_date=models.DateField(null=True,blank=True)
+    
+    
+    
+    # @property
+    # def is_due_soon(self):
+    #     if self.last_date is None:
+    #         return False
+    #     today = timezone.localdate()
+    #     return (self.last_date - today).days <= 1 and self.last_date >= today
+        
+     
+
+    # @property
+    # def is_overdue(self):
+    #     today = timezone.localdate()
+    #     return today > self.last_date
     
     
     
