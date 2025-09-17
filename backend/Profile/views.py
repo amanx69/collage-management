@@ -8,14 +8,9 @@ from rest_framework.decorators import permission_classes
 
 
 
-#! i option  the show  the  profile
-class ShowTheProfile(APIView):
-    
-    def get(self, request,pk):
-        obj= User.objects.get(id=pk)
-        ser= ProfileSerializer(obj)
-        return Response(ser.data)
-    
+#! i show the  the current  user  profile 
+
+
 class Showprofile(APIView):
     permission_classes=[IsAuthenticated]
     

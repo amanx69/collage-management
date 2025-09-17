@@ -12,7 +12,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['full_name',"dateofbirth", "email",
             "bio",
-            "profile_image","posts","announcement"]
+            "profile_image","posts","announcement",'branch']
         
         
         

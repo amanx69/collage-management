@@ -2,7 +2,6 @@ from rest_framework.response import Response
 from .Serializer import UserSerializer, NameSerializer, BioSerializer
 from rest_framework.views import APIView 
 from .models import User
-from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.contrib.auth import authenticate #! import  for  auth 
@@ -134,7 +133,7 @@ class Logout(APIView):
     
     
     def post(self, request):
-					
+
 					try:
 					
 						refresh_token= request.data["logout"]
