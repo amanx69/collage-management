@@ -47,6 +47,10 @@ class commentSerializer(serializers.ModelSerializer):
             comment=comments.objects.create( **validated_data)    
             comment.save(post=post,comment_user=request.user)  
             return comment     
+        def update(self, instance, validated_data):
+            instance.comment= validated_data.get('comment',instance.comment)
+            instance.save()
+            return instance
         
         
         
@@ -77,6 +81,13 @@ class postSerializer(serializers.ModelSerializer):
     #! give like counnt 
     def get_likes_count(self, obj):
         return obj.likes.count()
+    
+    
+    def update(self, instance, validated_data):
+        instance.title= validated_data.get('title',instance.title)
+        instance.decpription= validated_data.get('decpription',instance.decpription)
+        instance.save()
+        return instance
         
  
     

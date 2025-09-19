@@ -4,6 +4,7 @@ import  re
 import datetime
 from post.Serializer  import postSerializer
 from events.Serializer import AnnouncementSerializer
+from post.Serializer import likeSerializer
 
 
 
@@ -14,6 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
   
     posts=postSerializer(many=True,read_only=True) #! fro  how  all user  post  
     announcement=AnnouncementSerializer(many=True,read_only=True)
+    likes=likeSerializer(many=True,read_only=True)
     
     # full_name = serializers.EmailField()
    # phone = serializers.EmailField()
@@ -35,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "posts",
             "announcement",
+            'likes'
            
         ]
         # ! password will be required but not shown in API response

@@ -32,7 +32,74 @@ class UplodaPost(APIView):
                 "error":"error come for create post"
             })
             
+#! update  the post 
+
+class UpdatePost(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def patch(self,request,post_id):
+        
+        
+        post=get_object_or_404(Post,pk=post_id)
+        #! if the user  is not the owner of the post
+        if post.user != request.user:
+            return Response({
+                "status":status.HTTP_403_FORBIDDEN,
+                "error":"You don't have permission to update this post",
+              
+            })
+        ser= postSerializer(post,data=request.data,partial=True)
+        if  ser.is_valid():
+            ser.save()
+            return Response({
+                "data":ser.data,
+                "status":status.HTTP_200_OK,
+                "message":"post updated successfully",
+           
             
+               
+                
+            })
+            
+            
+        else:
+            return Response({
+                "error":ser.errors,
+                "status":status.HTTP_400_BAD_REQUEST,
+                "message":"post not updated",
+        })    
+            
+            
+#! delete the post 
+class DeletePost(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def delete(self,request,post_id):
+        post =get_object_or_404(Post,pk= post_id)    
+        if post.user != request.user:
+            return Response({
+                "status":status.HTTP_400_BAD_REQUEST,
+                "error":"You don't have permission to delete this post",
+                "error":"you can delete only your post"
+            })
+            
+        de= post.delete()   
+            
+        if  de:
+            return Response({
+                "status":status.HTTP_200_OK,
+                "message":"post deleted successfully"
+            })    
+            
+            
+        else:
+            return Response({
+                "status":status.HTTP_400_BAD_REQUEST,
+                "message":"post not deleted",
+                "error":"error come for delete post"
+            })    
+            
+         
+           
+     
                 
             
             #! create a comment 
@@ -77,7 +144,34 @@ class  deltedComment(APIView):
         return Response({
             "status":status.HTTP_200_OK,
             "message":"comment deleted successfully"
-        })      
+        })  
+        
+        
+#! update  the comment 
+class UpdateComment(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def patch(self,request,comment_id):
+        comment=get_object_or_404(comments,pk=comment_id)
+        if comment.comment_user!= request.user:
+            return Response({
+                "status":status.HTTP_403_FORBIDDEN,
+                "error":"You don't have permission to update this comment",
+                "error":"you can update only your comment"
+            })
+        ser= commentSerializer(comment,data=request.data,partial=True)
+        if  ser.is_valid():
+            ser.save()
+            return  Response({
+                "data":ser.data,
+                "status":status.HTTP_200_OK,
+                "message":"comment updated successfully"
+            })
+        else:
+            return Response({
+                "error":ser.errors,
+                "status":status.HTTP_400_BAD_REQUEST,
+                "message":"comment not updated"
+            })    
         
         
         
